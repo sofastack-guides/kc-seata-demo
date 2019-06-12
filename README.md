@@ -352,12 +352,12 @@ int minusBalanceCommit(@Param("userName") String userName, @Param("amount") BigD
 @Update("update balance_tb set balance = balance + #{amount}, freezed = freezed - #{amount} where user_name = #{userName}")
 int minusBalanceRollback(@Param("userName") String userName, @Param("amount") BigDecimal amount);
 ```
-修改balance_tb的表结构，增加freezed（冻结金额）字段:
+4. 修改balance_tb的表结构，增加freezed（冻结金额）字段:
 ```sql
 ALTER TABLE balance_tb add column freezed decimal(10,2) default 0.00;
 ```
 
-4. 在BalanceMngImpl类中实现BalanceMngFacade接口中增加的三个方法:
+5. 在BalanceMngImpl类中实现BalanceMngFacade接口中增加的三个方法:
 ```java
 ...
 private static final Logger LOGGER = LoggerFactory.getLogger(BalanceMngImpl.class);
@@ -460,7 +460,7 @@ public void purchase(String userName, String productCode, int count) {
 ```
 
 #### 5、StockMngImpl依赖的BalanceMngFacade接口改成使用xml方式引入:
-BalanceMngFacade是一个rpc接口，之前的例子我们是用户@SofaReference注解方式引入，目前TCC模式不支持注解的方式拦截，所以需要改成用xml的方法引入:
+BalanceMngFacade是一个rpc接口，之前的例子我们是用@SofaReference注解方式引入，目前TCC模式不支持注解的方式拦截（一下个版本修复），所以需要改成用xml的方法引入:
 1. 在stock-mng工程的src/main/resources目录下创建spring目录，并创建seata-sofarpc-reference.xml:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
