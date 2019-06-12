@@ -453,9 +453,11 @@ public void purchase(String userName, String productCode, int count) {
     if (count <= 0) {
         throw new RuntimeException("purchase count should not be negative");
     }
-    balanceMngFacade.minusBalancePrepare(null, userName, productPrice.multiply(new BigDecimal(count)));
-    stockMngMapper.purchase(userName, productCode, count);
+    LOGGER.info("purchase begin ... xid: " + RootContext.getXID());
+    stockMngMapper.createOrder(userName, productCode, count);
     stockMngMapper.minusStockCount(userName, productCode, count);
+    balanceMngFacade.minusBalancePrepare(null, userName, productPrice.multiply(new BigDecimal(count)));
+    LOGGER.info("purchase end");
 }
 ```
 
