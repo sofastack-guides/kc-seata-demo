@@ -1,25 +1,24 @@
 package io.sofastack.stockmng.facade;
 
-import java.math.BigDecimal;
+import io.sofastack.stockmng.model.ProductInfo;
+
+import java.util.List;
 
 /**
- * @author xuanbei
- * @since 2019/6/3
+ * @author yuanyuan
+ * @since 2019/6/10
  */
 public interface StockMngFacade {
+    /**
+     * 查询商品信息
+     *
+     */
+    List<ProductInfo> query(String userName);
+
 
     /**
-     * 获取商品价格
      *
-     * @param productCode 商品码
+     * 购买商品
      */
-    BigDecimal getPrice(String productCode);
-
-    /**
-     * 减少商品库存
-     *
-     * @param productCode 商品码
-     * @param count 减少数目
-     */
-    void minusStock(String productCode, int count);
+    void purchase(String userName, String productCode, int count);
 }

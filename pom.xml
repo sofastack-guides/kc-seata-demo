@@ -21,10 +21,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spring.version>5.1.2.RELEASE</spring.version>
-        <mysql-connector.version>5.1.31</mysql-connector.version>
-        <seata.version>0.5.0</seata.version>
-        <curator.version>2.9.1</curator.version>
+        <seata.version>0.6.1</seata.version>
         <netty4.version>4.1.24.Final</netty4.version>
     </properties>
 
@@ -38,9 +35,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.1</version>
         </dependency>
     </dependencies>
 
@@ -53,44 +52,8 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql-connector.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>io.seata</groupId>
-                <artifactId>seata-common</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-core</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-rm</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-rm-datasource</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-tm</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-spring</artifactId>
+                <artifactId>seata-all</artifactId>
                 <version>${seata.version}</version>
             </dependency>
 
