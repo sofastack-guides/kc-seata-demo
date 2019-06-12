@@ -173,8 +173,8 @@ private static void startSeatServer(){
 ```
 
 演示的Seata server使用本地文件作为存储，将下面两个文件复制到balance-mng-bootstrap和stock-mng工程的/src/main/resources目录下:
-文件名：file.conf
-文件内容：
+  文件名：file.conf
+  文件内容：  
 ```yaml
 transport {
   # tcp udt unix-domain-socket
@@ -228,8 +228,8 @@ store {
 }
 ```
 
-文件名：registry.conf
-文件内容：  
+  文件名：registry.conf
+  文件内容：
 ```yaml
 registry {
   # file 、nacos 、eureka、redis、zk
