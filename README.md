@@ -117,6 +117,7 @@ public static class DataSourceConfig {
     }
 }
 ```
+注意上面的dataSource方法返回的是DataSourceProxy代理的数据源
 
 #### 3、配置@GlobalTransactional注解使分布式事务生效:
 
@@ -228,7 +229,7 @@ store {
 ```
 
 文件名：registry.conf
-文件内容：
+文件内容：  
 ```yaml
 registry {
   # file 、nacos 、eureka、redis、zk
