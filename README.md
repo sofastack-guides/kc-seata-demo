@@ -4,7 +4,7 @@ SEATA Demo for SOFAStack Cloud Native Workshop on KubeCon China 2019
 ## AT 模式
 #### 1、引入maven依赖
 
-将下面的依赖引入到父工程的pom文件中（kc-seata-demo/pom.xml）:
+将下面的依赖引入到父工程的pom文件中（seata-demo-at/pom.xml）:
 ```xml
 ...
 <properties>
@@ -44,7 +44,7 @@ SEATA Demo for SOFAStack Cloud Native Workshop on KubeCon China 2019
 </dependencyManagement>
 ```
 
-将下面的依赖引入到 stock-mng 工程的pom文件中（kc-seata-demo/stock-mng/pom.xml）:
+将下面的依赖引入到 stock-mng 工程的pom文件中（seata-demo-at/stock-mng/pom.xml）:
 ```xml
 <dependencies>
 ....
@@ -60,7 +60,7 @@ SEATA Demo for SOFAStack Cloud Native Workshop on KubeCon China 2019
 <dependencies>
 ```
 
-将下面的依赖引入到 balance-mng-impl 工程的pom文件中（kc-seata-demo/balance-mng/balance-mng-impl/pom.xml）:
+将下面的依赖引入到 balance-mng-impl 工程的pom文件中（seata-demo-at/balance-mng/balance-mng-impl/pom.xml）:
 ```xml
 <dependencies>
 ....
@@ -121,19 +121,15 @@ public static class DataSourceConfig {
 
 #### 3、配置@GlobalTransactional注解使分布式事务生效:
 
-在StockMngImpl类的purchase方法上加入@GlobalTransactional注解:
+在BookStoreControllerImpl类的purchase方法上加入@GlobalTransactional注解:
 ```java
 ...
 import io.seata.spring.annotation.GlobalTransactional;
 ...
 
-/**
- *
- * 购买商品
- */
 @Override
 @GlobalTransactional(timeoutMills = 300000, name = "kc-book-store-tx")
-public void purchase(String userName, String productCode, int count) {
+public Success purchase(String body) {
   ...
 }
 ```
@@ -441,23 +437,32 @@ public static class DataSourceConfig {
 }
 ```
 
-#### 4、StockMngImpl的purchase方法改成调用BalanceMngFacade.minusBalancePrepare方法:
+#### 4、BookStoreControllerImpl的purchase方法改成调用BalanceMngFacade.minusBalancePrepare方法:
 ```java
 @Override
-@GlobalTransactional(timeoutMills = 3000000, name = "kc-book-store-tx")
-public void purchase(String userName, String productCode, int count) {
-    BigDecimal productPrice = stockMngMapper.queryProductPrice(productCode, userName);
+@GlobalTransactional(timeoutMills = 300000, name = "kc-book-store-tx")
+public Success purchase(String body) {
+
+    JSONObject obj = JSON.parseObject(body);
+    String userName = obj.getString("userName");
+    String productCode = obj.getString("productCode");
+    int count = obj.getInteger("count");
+
+    BigDecimal productPrice = stockMngFacade.queryProductPrice(productCode, userName);
     if (productPrice == null) {
         throw new RuntimeException("product code does not exist");
     }
     if (count <= 0) {
         throw new RuntimeException("purchase count should not be negative");
     }
-    LOGGER.info("purchase begin ... xid: " + RootContext.getXID());
-    stockMngMapper.createOrder(userName, productCode, count);
-    stockMngMapper.minusStockCount(userName, productCode, count);
+    LOGGER.info("purchase begin ... XID:" + RootContext.getXID());
+    stockMngFacade.createOrder(userName, productCode, count);
+    stockMngFacade.minusStockCount(userName, productCode, count);
     balanceMngFacade.minusBalancePrepare(null, userName, productPrice.multiply(new BigDecimal(count)));
     LOGGER.info("purchase end");
+    Success success = new Success();
+    success.setSuccess("true");
+    return success;
 }
 ```
 
@@ -488,7 +493,7 @@ public class StockMngApplication {
 ...
 ```
 
-3. 将StockMngImpl类中引用balanceMngFacade接口的注解换成@Autowared:
+3. 将BookStoreControllerImpl类中引用balanceMngFacade接口的注解换成@Autowared:
 ```java
 ...
 //@SofaReference(interfaceType = BalanceMngFacade.class, uniqueId = "${service.unique.id}", binding = @SofaReferenceBinding(bindingType = "bolt"))
