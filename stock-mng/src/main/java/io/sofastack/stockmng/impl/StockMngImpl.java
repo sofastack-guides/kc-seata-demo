@@ -1,11 +1,7 @@
 package io.sofastack.stockmng.impl;
 
-import com.alipay.sofa.runtime.api.annotation.SofaReference;
-import com.alipay.sofa.runtime.api.annotation.SofaReferenceBinding;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.alipay.sofa.runtime.api.annotation.SofaServiceBinding;
-import io.seata.spring.annotation.GlobalTransactional;
-import io.sofastack.balance.manage.facade.BalanceMngFacade;
 import io.sofastack.stockmng.facade.StockMngFacade;
 import io.sofastack.stockmng.mapper.StockMngMapper;
 import io.sofastack.stockmng.model.ProductInfo;
@@ -20,15 +16,10 @@ import java.util.List;
  * @since 2019/6/10
  */
 @Service
-@SofaService(interfaceType = StockMngFacade.class, uniqueId = "${service.unique.id}", bindings = {
-        @SofaServiceBinding(bindingType = "bolt") })
+@SofaService(interfaceType = StockMngFacade.class, uniqueId = "${service.unique.id}", bindings = { @SofaServiceBinding(bindingType = "bolt") })
 public class StockMngImpl implements StockMngFacade {
-
     @Resource
     private StockMngMapper stockMngMapper;
-
-    @SofaReference(interfaceType = BalanceMngFacade.class, uniqueId = "${service.unique.id}", binding = @SofaReferenceBinding(bindingType = "bolt"))
-    private BalanceMngFacade balanceMngFacade;
 
     @Override
     public List<ProductInfo> query(String userName) {
@@ -50,23 +41,19 @@ public class StockMngImpl implements StockMngFacade {
         }
     }
 
-    /**
-     *
-     * 购买商品
-     */
     @Override
-    @GlobalTransactional(timeoutMills = 3000000, name = "kc-book-store-tx")
-    public void purchase(String userName, String productCode, int count) {
-        BigDecimal productPrice = stockMngMapper.queryProductPrice(productCode, userName);
-        if (productPrice == null) {
-            throw new RuntimeException("product code does not exist");
-        }
-        if (count <= 0) {
-            throw new RuntimeException("purchase count should not be negative");
-        }
-        balanceMngFacade.minusBalance(userName, productPrice.multiply(new BigDecimal(count)));
-        stockMngMapper.purchase(userName, productCode, count);
-        stockMngMapper.minusStockCount(userName, productCode, count);
+    public BigDecimal queryProductPrice(String productCode, String userName) {
+        return stockMngMapper.queryProductPrice(productCode, userName);
+    }
+
+    @Override
+    public boolean createOrder(String userName, String productCode, int count) {
+        return stockMngMapper.createOrder(userName, productCode, count) > 0;
+    }
+
+    @Override
+    public boolean minusStockCount(String userName, String productCode, int count) {
+        return stockMngMapper.minusStockCount(userName, productCode, count) > 0;
     }
 
     private static final String ITEM_DESCRIPTION = "<div>\n"
