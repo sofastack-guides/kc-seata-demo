@@ -1,5 +1,6 @@
-# kc-seata-demo
-SEATA Demo for SOFAStack Cloud Native Workshop on KubeCon China 2019
+# 使用 Seata 保障支付一致性
+`SEATA Demo for SOFAStack Cloud Native Workshop on KubeCon China 2019`
+在开始该demo之前先完成[使用 SOFAStack 快速构建微服务](https://github.com/sofastack-guides/kc-sofastack-demo)，该demo是在它基础上加上Seata分布式事务。但该demo不是只能应用于SOFA，可以适用于任何java技术栈应用。
 
 ## AT 模式
 #### 1、引入maven依赖
