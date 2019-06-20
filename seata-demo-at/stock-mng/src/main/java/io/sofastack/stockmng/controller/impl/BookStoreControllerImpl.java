@@ -54,7 +54,6 @@ public class BookStoreControllerImpl implements BookStoreController {
     }
 
     @Override
-    @GlobalTransactional(timeoutMills = 300000, name = "kc-book-store-tx")
     public Success purchase(String body) {
 
         JSONObject obj = JSON.parseObject(body);
@@ -74,6 +73,7 @@ public class BookStoreControllerImpl implements BookStoreController {
         stockMngFacade.minusStockCount(userName, productCode, count);
         balanceMngFacade.minusBalance(userName, productPrice.multiply(new BigDecimal(count)));
         LOGGER.info("purchase end");
+
         Success success = new Success();
         success.setSuccess("true");
         return success;

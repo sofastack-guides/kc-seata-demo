@@ -90,6 +90,11 @@ import io.seata.rm.datasource.DataSourceProxy;
 import io.seata.spring.annotation.GlobalTransactionScanner;
 ...
 
+
+public static void main(String[] args) {
+    SpringApplication.run(BalanceMngApplication.class, args);
+}
+
 @Configuration
 public static class DataSourceConfig {
 
@@ -458,7 +463,12 @@ public Success purchase(String body) {
     LOGGER.info("purchase begin ... XID:" + RootContext.getXID());
     stockMngFacade.createOrder(userName, productCode, count);
     stockMngFacade.minusStockCount(userName, productCode, count);
+
+
+    /* == 这里改成调minusBalancePrepare方法 == */
     balanceMngFacade.minusBalancePrepare(null, userName, productPrice.multiply(new BigDecimal(count)));
+    /* ==== */
+
     LOGGER.info("purchase end");
     Success success = new Success();
     success.setSuccess("true");
