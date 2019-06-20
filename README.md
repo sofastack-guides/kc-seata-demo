@@ -305,7 +305,7 @@ CREATE TABLE `undo_log` (
 #### 6、启动Seata server和stock-mng、balance-mng应用:
 1. 运行BalanceMngApplication类的main方法(包含启动Seata server)
 2. 运行StockMngApplication类的main方法
-3. 浏览器打开 http://127.0.0.1:8080/
+3. 浏览器打开 http://localhost:8080/index.html
 
 
 
@@ -515,4 +515,4 @@ private BalanceMngFacade balanceMngFacade;
 #### 6、启动Seata server和stock-mng、balance-mng应用:
 1. 运行BalanceMngApplication类的main方法(包含启动Seata server)
 2. 运行StockMngApplication类的main方法
-3. 浏览器打开 http://127.0.0.1:8080/
+3. 浏览器打开 http://localhost:8080/index.html
