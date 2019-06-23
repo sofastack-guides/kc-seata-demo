@@ -54,6 +54,7 @@ public class BookStoreControllerImpl implements BookStoreController {
     }
 
     @Override
+    @GlobalTransactional(timeoutMills = 300000, name = "kc-book-store-tx")
     public Success purchase(String body) {
 
         JSONObject obj = JSON.parseObject(body);
