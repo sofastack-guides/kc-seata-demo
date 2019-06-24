@@ -104,7 +104,7 @@ public static class DataSourceConfig {
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
     public DataSource dataSource(DataSourceProperties properties) {
         HikariDataSource dataSource = createDataSource(properties, HikariDataSource.class);
-        if (StringUtils.hasText(properties.getName())) {
+        if (properties.getName()!=null && properties.getName().length() > 0) {
             dataSource.setPoolName(properties.getName());
         }
         return new DataSourceProxy(dataSource);
