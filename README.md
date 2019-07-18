@@ -1,5 +1,7 @@
 # 使用 Seata 保障支付一致性
-`SEATA Demo for SOFAStack Cloud Native Workshop on KubeCon China 2019`<br>
+
+**注意：您需要自行部署后端环境依赖，并修改示例中的服务依赖地址即可使用。**
+
 在开始该demo之前先完成《[使用 SOFAStack 快速构建微服务](https://github.com/sofastack-guides/kc-sofastack-demo)》，如果没有完成，可以基于仓库里的kc-sofastack-demo工程为基线完成下面的demo，该demo是在它基础上加上Seata分布式事务。但该demo不是只能应用于SOFA，可以适用于任何java技术栈应用。
 
 ## AT 模式
@@ -517,3 +519,6 @@ private BalanceMngFacade balanceMngFacade;
 1. 运行BalanceMngApplication类的main方法(包含启动Seata server)
 2. 运行StockMngApplication类的main方法
 3. 浏览器打开 http://localhost:8080/index.html
+
+## 更多
+- [下载本次 Demo 幻灯片](https://gw.alipayobjects.com/os/basement_prod/04ed66e1-b962-4593-8924-ba2b0c096fe4.pdf)
